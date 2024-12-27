@@ -25,6 +25,22 @@
             max-width: 400px;
             text-align: left;
         }
+        #infoip {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            text-align: left;
+        }
+        #infoloc {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            text-align: left;
+        }
         p {
             font-size: 18px;
             margin: 10px 0;
@@ -58,15 +74,32 @@
 </head>
 <body>
     <p><div id="info" class="loading">Загрузка информации...</div></p>
+    <div id="infoloc" class="loading">Загрузка информации на основе ip...</div>
     <script>
-        	fetch('https://api.ipify.org?format=json')
-              .then(response => response.json())
-              .then(data => {
-                  document.getElementById('info').innerHTML = `
-                      <p>Ваш IP адрес:</p>
-                      <h2>${data.ip}</h2>
-                  `;
-              })
+        fetch('https://get.geojs.io/v1/ip/geo.json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('info').innerHTML = `
+                    <p>Ваш IP адрес:</p>
+                    <h2>${data.ip}</h2>
+                    
+                `;
+                document.getElementById('infoloc').innerHTML = `
+                    <p>Страна:</p>
+                    <h3>${data.country}</h3>
+                    <p>Регион:</p>
+                    <h3>${data.region}</h3>
+                    <p>Город:</p>
+                    <h3>${data.city}</h3>
+                    <p>Точность:</p>
+                    <h3>${data.accuracy} км</h3>
+                    <p>Координаты:</p>
+                    <h3>${data.latitude} ${data.longitude}</h3>
+                    <p>Провайдер:</p>
+                    <h3>${data.organization_name}</h3>
+                    
+                `;
+            })
             .catch(error => {
                 document.getElementById('info').innerHTML = `
                     <p>Не удалось получить информацию о IP адресе.</p>
